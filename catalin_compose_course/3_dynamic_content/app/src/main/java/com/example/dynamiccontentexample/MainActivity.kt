@@ -11,8 +11,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,12 +62,10 @@ fun Greeting(name: String) {
 }
 
 @Composable
-fun Body() {
+fun Body(viewModel: MainViewModel = MainViewModel()) {
     val greetingListState = remember { mutableStateListOf<String>("John") }
 
-    val textFieldStateContent = remember {
-        mutableStateOf("")
-    }
+    val textFieldStateContent = viewModel.textFieldState.observeAsState("")
 
     GreetingList(
         names = greetingListState,
@@ -76,7 +74,7 @@ fun Body() {
             greetingListState.add(textFieldStateContent.value)
         },
         onValueChange = { newName ->
-            textFieldStateContent.value = newName
+            viewModel.onTextChanged(newName)
         },
     )
 }
