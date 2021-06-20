@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-
-val namesList: ArrayList<String> = arrayListOf("John", "Michael", "Andrew", "Danna")
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +28,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun GreetingList(names: List<String>) {
+fun GreetingList(names: List<String>, textFieldValue: String, buttonClick: () -> Unit, onValueChange: (newName: String) -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
@@ -36,10 +38,15 @@ fun GreetingList(names: List<String>) {
             Greeting(name = name)
         }
 
-        Button(
-            onClick = {
-                namesList.add("Murillo")
+        TextField(
+            value = textFieldValue,
+            onValueChange = { newName ->
+                onValueChange(newName)
             }
+        )
+
+        Button(
+            onClick = buttonClick
         ) {
             Text("ClickMe")
         }
@@ -50,13 +57,28 @@ fun GreetingList(names: List<String>) {
 fun Greeting(name: String) {
     Text(
         text = "Hello $name",
-        style = MaterialTheme.typography.h4
+        style = MaterialTheme.typography.h5
     )
 }
 
 @Composable
 fun Body() {
-    GreetingList(names = namesList)
+    val greetingListState = remember { mutableStateListOf<String>("John") }
+
+    val textFieldStateContent = remember {
+        mutableStateOf("")
+    }
+
+    GreetingList(
+        names = greetingListState,
+        textFieldValue = textFieldStateContent.value,
+        buttonClick = {
+            greetingListState.add(textFieldStateContent.value)
+        },
+        onValueChange = { newName ->
+            textFieldStateContent.value = newName
+        },
+    )
 }
 
 @Preview(showBackground = true)
