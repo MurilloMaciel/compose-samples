@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ProfileCardLayout</string>
+    <string name="user_online">Active now</string>
+    <string name="user_offline">Offline now</string>
+</resources>
