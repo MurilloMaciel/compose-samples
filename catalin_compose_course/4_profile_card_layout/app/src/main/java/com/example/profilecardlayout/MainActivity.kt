@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -20,8 +22,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.transform.CircleCropTransformation
 import com.example.profilecardlayout.ui.theme.LightGreen
 import com.example.profilecardlayout.ui.theme.MyTheme
+import com.google.accompanist.coil.rememberCoilPainter
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,9 +46,9 @@ fun Body() {
         Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
-            Column {
-                userProfileList.forEach { user ->
-                    ProfileCard(user)
+            LazyColumn {
+                items(userProfileList) { item ->
+                    ProfileCard(item)
                 }
             }
         }
@@ -107,10 +111,14 @@ fun ProfilePicture(drawableId: Int, userStatus: Boolean) {
         elevation = 4.dp
     ) {
         Image(
-            painter = painterResource(id = drawableId),
-            contentDescription = "Profile image",
+            painter = rememberCoilPainter(
+                request = drawableId,
+                requestBuilder = {
+                    transformations(CircleCropTransformation())
+                }
+            ),
+            contentDescription = "description",
             modifier = Modifier.size(72.dp),
-            contentScale = ContentScale.Crop
         )
     }
 }
