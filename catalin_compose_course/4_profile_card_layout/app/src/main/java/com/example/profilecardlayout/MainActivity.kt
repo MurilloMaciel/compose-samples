@@ -87,7 +87,7 @@ fun ProfileCard(user: UserProfile) {
             horizontalArrangement = Arrangement.Start
         ) {
             ProfilePicture(
-                drawableId = user.drawableId,
+                imageUrl = user.imageUrl,
                 userStatus = user.status
             )
             ProfileContent(
@@ -99,7 +99,7 @@ fun ProfileCard(user: UserProfile) {
 }
 
 @Composable
-fun ProfilePicture(drawableId: Int, userStatus: Boolean) {
+fun ProfilePicture(imageUrl: String, userStatus: Boolean) {
     val imageBorderColor = if (userStatus) MaterialTheme.colors.LightGreen else Color.Red
     Card(
         shape = CircleShape,
@@ -112,7 +112,7 @@ fun ProfilePicture(drawableId: Int, userStatus: Boolean) {
     ) {
         Image(
             painter = rememberCoilPainter(
-                request = drawableId,
+                request = imageUrl,
                 requestBuilder = {
                     transformations(CircleCropTransformation())
                 }
