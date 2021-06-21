@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.profilecardlayout.ui.theme.LightGreen
@@ -116,7 +117,7 @@ fun ProfilePicture(drawableId: Int, userStatus: Boolean) {
 
 @Composable
 fun ProfileContent(userName: String, userStatus: Boolean) {
-    val statusText = if (userStatus) "Active now" else "Offline now"
+    val statusText = stringResource(id = if (userStatus) R.string.user_online else R.string.user_offline)
     Column(
         modifier = Modifier
             .padding(8.dp)
